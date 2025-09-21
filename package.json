@@ -10,8 +10,12 @@
 feature/create-unreal-guide-page
   "author": "Kuonirad",
 
+feature/create-unreal-guide-page
+  "author": "Kuonirad",
+
   "author": "",
-main
+
+ main
   "license": "ISC",
   "dependencies": {
     "axe-core": "^4.10.3",
