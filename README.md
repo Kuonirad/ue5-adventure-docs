@@ -27,5 +27,3 @@ feature/create-unreal-guide-page
 ## Author
 
 This project was created by Kuonirad.
-
-main
