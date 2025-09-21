@@ -1,0 +1,16 @@
+{
+  "name": "unreal-engine-guide",
+  "version": "1.0.0",
+  "description": "Accessibility audit for the Unreal Engine guide page.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axe-core": "^4.10.3",
+    "jsdom": "^27.0.0"
+  }
+}
