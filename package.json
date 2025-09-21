@@ -4,18 +4,10 @@
   "description": "Accessibility audit for the Unreal Engine guide page.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node run-axe.js"
   },
   "keywords": [],
-feature/create-unreal-guide-page
   "author": "Kuonirad",
-
-feature/create-unreal-guide-page
-  "author": "Kuonirad",
-
-  "author": "",
-
- main
   "license": "ISC",
   "dependencies": {
     "axe-core": "^4.10.3",
