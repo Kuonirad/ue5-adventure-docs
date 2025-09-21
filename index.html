@@ -1,0 +1,942 @@
+<!DOCTYPE html><html lang="en"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>The Ultimate Unreal Engine 5 Adventure Game Guide</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        :root {
+            --primary: #1e293b;
+            --secondary: #334155;
+            --accent: #0f172a;
+            --text-primary: #020617;
+            --text-secondary: #475569;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --bg-soft: #f8fafc;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+        }
+
+        .serif { font-family: 'Playfair Display', serif; }
+
+        .toc-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-soft);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 50;
+            padding: 2rem 1.5rem;
+        }
+
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .hero-title {
+            grid-column: 1 / -1;
+            position: relative;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 4rem;
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+        .hero-visual {
+            background: var(--accent);
+            border-radius: 0.5rem;
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+            margin: 4rem 0 2rem 0;
+        }
+
+        .code-block {
+            background: var(--accent);
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+            margin: 1.5rem 0;
+        }
+
+        .info-box {
+            background: var(--bg-soft);
+            border-left: 4px solid var(--primary);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        .warning-box {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+            border-bottom-color: var(--border);
+        }
+
+        .toc-link.active {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .toc-fixed { display: none; }
+            .main-content { margin-left: 0; }
+        }
+    </style>
+  </head>
+
+  <body class="bg-white">
+    <!-- Fixed Table of Contents -->
+    <nav class="toc-fixed">
+      <h3 class="serif text-lg font-bold mb-4 text-gray-900">Contents</h3>
+      <div class="space-y-1">
+        <a class="toc-link" href="#introduction">Introduction</a>
+        <a class="toc-link" href="#prerequisites">1. Prerequisites</a>
+        <a class="toc-link" href="#character-movement">2. Advanced Character Movement</a>
+        <a class="toc-link" href="#item-integration">3. Item Integration</a>
+        <a class="toc-link" href="#interaction-system">4. Interaction System</a>
+        <a class="toc-link" href="#interactive-objects">5. Interactive Objects</a>
+        <a class="toc-link" href="#quest-system">6. Quest System</a>
+        <a class="toc-link" href="#character-customization">7. Character Customization</a>
+        <a class="toc-link" href="#environment-integration">8. Environment Integration</a>
+        <a class="toc-link" href="#bug-fixes">9. Bug Fixes and Polish</a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Hero Section -->
+      <section class="p-8">
+        <div class="hero-grid max-w-6xl mx-auto">
+          <!-- Hero Title -->
+          <div class="hero-title">
+            <h1 class="serif text-5xl font-bold mb-4 leading-tight">
+              <em>The Ultimate Unreal Engine 5</em>
+              <br/>
+              Adventure Game Guide
+            </h1>
+            <p class="text-xl opacity-90 max-w-2xl">
+              A comprehensive, step-by-step walkthrough for building a feature-rich third-person adventure game with modular, data-driven architecture
+            </p>
+            <div class="mt-6 flex items-center space-x-4 text-sm">
+              <span class="bg-white bg-opacity-20 px-3 py-1 rounded">Unreal Engine 5.3+</span>
+              <span class="bg-white bg-opacity-20 px-3 py-1 rounded">Blueprint Only</span>
+              <span class="bg-white bg-opacity-20 px-3 py-1 rounded">50+ Systems</span>
+            </div>
+          </div>
+
+          <!-- Hero Visuals -->
+          <div class="hero-visual">
+            <img alt="Unreal Engine 5 third person game character" class="rounded-lg shadow-lg max-w-full h-auto" src="https://kimi-web-img.moonshot.cn/img/d1iv7db44yhgxn.cloudfront.net/afe1e74e90f7bb4b03915afcd5b7ae49d5769074.png" size="medium" aspect="wide" style="photo" query="Unreal Engine 5 third person character" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+          </div>
+
+          <div class="hero-visual">
+            <div class="text-center text-white">
+              <span class="fas fa-cogs text-5xl mb-4 opacity-80" role="img" aria-label="Gears icon"></span>
+              <h3 class="serif text-2xl font-bold mb-2">Modular Architecture</h3>
+              <p class="text-sm opacity-80">Scalable, maintainable systems that work together seamlessly</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Introduction -->
+      <section class="px-8 mb-12" id="introduction">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-6 text-gray-900">Introduction</h2>
+          <div class="prose prose-lg max-w-none">
+            <p class="text-xl text-gray-700 mb-6 leading-relaxed">
+              This guide provides a comprehensive, step-by-step walkthrough for building a feature-rich third-person adventure game in Unreal Engine 5. It covers everything from initial project setup and advanced character movement to complex systems like inventory, quests, and character customization. By following this guide, you will learn to implement a modular, data-driven architecture that is both scalable and easy to maintain.
+            </p>
+
+            <div class="info-box">
+              <h4 class="font-semibold mb-2">What You&#39;ll Build</h4>
+              <ul class="list-disc list-inside space-y-1 text-sm">
+                <li>Advanced character movement with sprinting and crouching systems</li>
+                <li>Comprehensive inventory management with item stacking</li>
+                <li>Robust interaction system with raycasting</li>
+                <li>Data-driven quest system with objective tracking</li>
+                <li>Modular character customization</li>
+                <li>Polished UI with interaction feedback</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 1: Prerequisites -->
+      <section class="px-8 mb-12" id="prerequisites">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">1. Prerequisites: The Foundation of Organization</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">1.1 Project Creation</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3 text-lg">1.1.1 Launching Unreal Engine and Selecting the Third Person Template</h4>
+              <p class="text-gray-700 mb-4">
+                The initial step in creating a robust and scalable adventure game in Unreal Engine 5 is to establish a solid foundation through a well-structured project setup. The <strong>Third Person</strong> template provides a stable and well-tested base, ensuring that the core gameplay loop of character control and navigation is solid before adding more complex layers of functionality.
+              </p>
+            </div>
+
+            <div class="warning-box">
+              <h4 class="font-semibold mb-2"><span class="fas fa-exclamation-triangle mr-2" role="img" aria-label="Warning icon"></span>Crucial Configuration</h4>
+              <p class="text-sm">When configuring your project, ensure <strong>Starter Content</strong> is unchecked to maintain a clean project structure and avoid unnecessary asset clutter.</p>
+            </div>
+
+            <div class="mt-6">
+              <h4 class="font-semibold mb-3 text-lg">1.1.2 Configuring Project Defaults</h4>
+              <ul class="list-disc list-inside space-y-2 text-gray-700">
+                <li><strong>Project Type:</strong> Blueprint (not C++)</li>
+                <li><strong>Target Platform:</strong> Desktop</li>
+                <li><strong>Quality Preset:</strong> Scalable</li>
+                <li><strong>Starter Content:</strong> Unchecked</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">1.2 Folder Structure (The Filing Cabinet)</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">1.2.1 Creating the Core Project Folder</h4>
+              <p class="text-gray-700 mb-4">
+                A well-organized folder structure is the backbone of any successful game development project. The main project folder will serve as the root for all custom content.
+              </p>
+
+              <div class="code-block">
+                Content/
+                └── AdventureGame/
+                ├── Blueprints/
+                │ ├── Character/
+                │ ├── Components/
+                │ ├── Interaction/
+                │ └── Core/
+                ├── Data/
+                │ ├── Items/
+                │ └── Quests/
+                ├── Input/
+                └── UI/
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 2: Character Movement -->
+      <section class="px-8 mb-12" id="character-movement">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">2. Advanced Character Movement</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">2.1 Enhanced Input System (EIS)</h3>
+            <p class="text-gray-700 mb-4">
+              The Enhanced Input System decouples the physical key press from the action it performs, allowing for more modular and scalable input handling.
+            </p>
+
+            <div class="grid md:grid-cols-2 gap-6 mb-6">
+              <div class="info-box">
+                <h4 class="font-semibold mb-2">Input Actions Created:</h4>
+                <ul class="list-disc list-inside text-sm">
+                  <li><code>IA_Sprint</code> (Digital bool)</li>
+                  <li><code>IA_Crouch</code> (Digital bool)</li>
+                  <li><code>IA_Interact</code> (Digital bool)</li>
+                </ul>
+              </div>
+              <div class="info-box">
+                <h4 class="font-semibold mb-2">Key Mappings:</h4>
+                <ul class="list-disc list-inside text-sm">
+                  <li><strong>Sprint:</strong> Left Shift</li>
+                  <li><strong>Crouch:</strong> Left Ctrl</li>
+                  <li><strong>Interact:</strong> E</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">2.2 Character Configuration</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">2.2.1 Defining Character Variables</h4>
+              <p class="text-gray-700 mb-4">These variables control character movement speeds and stamina system parameters.</p>
+
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="bg-gray-50 p-4 rounded">
+                  <h5 class="font-medium mb-2">Movement Speeds</h5>
+                  <ul class="text-sm space-y-1">
+                    <li><code>WalkSpeed</code>: 400.0</li>
+                    <li><code>SprintSpeed</code>: 700.0</li>
+                    <li><code>CrouchSpeed</code>: 200.0</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded">
+                  <h5 class="font-medium mb-2">Stamina System</h5>
+                  <ul class="text-sm space-y-1">
+                    <li><code>MaxStamina</code>: 100.0</li>
+                    <li><code>StaminaDrainRate</code>: 20.0</li>
+                    <li><code>StaminaRegenRate</code>: 10.0</li>
+                    <li><code>StaminaRegenDelay</code>: 2.0s</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">2.3 Implementing Logic</h3>
+
+            <div class="warning-box">
+              <h4 class="font-semibold mb-2"><span class="fas fa-lightbulb mr-2" role="img" aria-label="Lightbulb icon"></span>Frame Rate Independence</h4>
+              <p class="text-sm">Always multiply tick-based calculations by <code>Delta Seconds</code> to ensure consistent behavior across different frame rates!</p>
+            </div>
+
+            <div class="mt-6">
+              <h4 class="font-semibold mb-3">2.3.3 The Stamina System</h4>
+              <p class="text-gray-700 mb-4">
+                The stamina system prevents infinite sprinting and adds resource management to movement. It uses timers for regeneration delay and Event Tick for real-time updates.
+              </p>
+
+              <div class="code-block">
+                // Stamina Drain Logic (Event Tick)
+                if (IsSprinting &amp;&amp; CurrentStamina &gt; 0)
+                {
+                CurrentStamina -= StaminaDrainRate * DeltaSeconds;
+                if (CurrentStamina &lt;= 0)
+                {
+                StopSprinting();
+                }
+                }
+                else if (IsRegeneratingStamina &amp;&amp; CurrentStamina &lt; MaxStamina)
+                {
+                CurrentStamina += StaminaRegenRate * DeltaSeconds;
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 3: Item Integration -->
+      <section class="px-8 mb-12" id="item-integration">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">3. Item Integration</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">3.1 Data Definition (The Item Catalog)</h3>
+
+            <div class="mb-6">
+              <p class="text-gray-700 mb-4">
+                A robust item system begins with well-defined data structures. We use Structs and Data Tables to create a centralized item catalog.
+              </p>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="info-box">
+                  <h4 class="font-semibold mb-2">S_ItemData Structure</h4>
+                  <ul class="text-sm space-y-1">
+                    <li><code>ItemID</code> (Name)</li>
+                    <li><code>DisplayName</code> (Text)</li>
+                    <li><code>Description</code> (Text)</li>
+                    <li><code>Icon</code> (Texture 2D)</li>
+                    <li><code>IsStackable</code> (Boolean)</li>
+                    <li><code>MaxStackSize</code> (Integer)</li>
+                    <li><code>WorldMesh</code> (Static Mesh)</li>
+                  </ul>
+                </div>
+                <div class="info-box">
+                  <h4 class="font-semibold mb-2">S_InventorySlot Structure</h4>
+                  <ul class="text-sm space-y-1">
+                    <li><code>ItemID</code> (Name)</li>
+                    <li><code>Quantity</code> (Integer)</li>
+                  </ul>
+                  <p class="text-xs mt-2 text-gray-600">Stores lightweight references to items</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">3.2 Inventory Component</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">3.2.4 The Crucial Function: AddItem</h4>
+              <p class="text-gray-700 mb-4">
+                The AddItem function handles item stacking and slot management. It must account for the Blueprint struct problem where array elements are copied by value.
+              </p>
+
+              <div class="warning-box">
+                <h4 class="font-semibold mb-2"><span class="fas fa-exclamation-triangle mr-2" role="img" aria-label="Warning icon"></span>The Struct Problem</h4>
+                <p class="text-sm">When you get a struct from an array in Blueprints, you get a copy. Use <code>Set Array Elem</code> to modify the original array!</p>
+              </div>
+
+              <div class="code-block">
+                // AddItem Logic
+                if (ItemIsStackable)
+                {
+                // Find existing stack
+                for (Slot in InventorySlots)
+                {
+                if (Slot.ItemID == ItemID &amp;&amp; Slot.Quantity &lt; MaxStackSize)
+                {
+                // Update existing stack
+                Slot.Quantity += AmountToAdd;
+                SetArrayElement(InventorySlots, Index, Slot);
+                break;
+                }
+                }
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 4: Interaction System -->
+      <section class="px-8 mb-12" id="interaction-system">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">4. Interaction System</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">4.1 The Interaction Interface</h3>
+            <p class="text-gray-700 mb-4">
+              Interfaces define a contract for communication without requiring knowledge of specific object types. It&#39;s like a USB port standard - any device that implements it can communicate.
+            </p>
+
+            <div class="info-box">
+              <h4 class="font-semibold mb-2">BPI_Interactable Functions</h4>
+              <ul class="list-disc list-inside space-y-1 text-sm">
+                <li><code>GetInteractionPrompt()</code> → Returns display text</li>
+                <li><code>CanInteract()</code> → Returns boolean permission</li>
+                <li><code>OnInteract(Interactor)</code> → Executes interaction logic</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">4.2 Optimized Traces</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">4.2.1 Custom Trace Channel</h4>
+              <p class="text-gray-700 mb-4">
+                A dedicated &#34;InteractTrace&#34; channel ensures traces only hit intended objects, improving performance and reliability.
+              </p>
+
+              <div class="bg-blue-50 p-4 rounded-lg">
+                <h5 class="font-medium mb-2">Trace Configuration</h5>
+                <ul class="text-sm space-y-1">
+                  <li><strong>Channel Name:</strong> &#34;InteractTrace&#34;</li>
+                  <li><strong>Default Response:</strong> Ignore</li>
+                  <li><strong>Interaction Distance:</strong> 300.0 units</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">4.3 Player Interaction Logic</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">4.3.2 The Interaction Trace</h4>
+              <p class="text-gray-700 mb-4">
+                A line trace is performed every frame from the camera to detect interactive objects. The trace must ignore the player and only hit objects that block the InteractTrace channel.
+              </p>
+
+              <div class="code-block">
+                // Trace Calculation
+                Start = Camera-&gt;GetWorldLocation()
+                Direction = Camera-&gt;GetForwardVector()
+                End = Start + (Direction * InteractionDistance)
+
+                // Perform Trace
+                HitResult = LineTraceByChannel(Start, End, InteractTrace)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 5: Interactive Objects -->
+      <section class="px-8 mb-12" id="interactive-objects">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">5. Interactive Objects</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">5.1 Base Pickup Actor</h3>
+
+            <div class="mb-6">
+              <p class="text-gray-700 mb-4">
+                The base pickup class provides common functionality for all collectible items, handling interaction and inventory integration.
+              </p>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="info-box">
+                  <h4 class="font-semibold mb-2">Key Features</h4>
+                  <ul class="text-sm space-y-1">
+                    <li>Instance-editable <code>ItemID</code> and <code>Quantity</code></li>
+                    <li>Automatic mesh visualization</li>
+                    <li>Inventory integration on interaction</li>
+                    <li>Self-destruction after pickup</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded">
+                  <img alt="Unreal Engine Blueprint interface showing interactive object settings" class="rounded-lg w-full" src="https://kimi-web-img.moonshot.cn/img/static.skillshare.com/8214363f0793cb7e7bcc927bbdbd4aed86906c3e" size="medium" aspect="wide" query="Unreal Engine interactive object blueprint" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">5.2 Interactive Door</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">5.2.2 Smooth Animation with Timelines</h4>
+              <p class="text-gray-700 mb-4">
+                Timelines provide smooth, non-linear animations for interactive objects like doors. The door panel rotates 90 degrees around its hinge over 1.5 seconds.
+              </p>
+
+              <div class="code-block">
+                // Door Animation Timeline
+                Timeline &#34;Alpha&#34; (0.0 to 1.0 over 1.5s)
+                Lerp(RotationA: (0,0,0), RotationB: (0,90,0), Alpha)
+                SetRelativeRotation(DoorPanel, LerpResult)
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 6: Quest System -->
+      <section class="px-8 mb-12" id="quest-system">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">6. Quest System</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">6.1 Quest Data Structures</h3>
+
+            <div class="mb-6">
+              <p class="text-gray-700 mb-4">
+                The quest system separates quest definitions from progress tracking using structured data containers.
+              </p>
+
+              <div class="grid md:grid-cols-3 gap-4">
+                <div class="info-box">
+                  <h4 class="font-semibold mb-2">Objective Types</h4>
+                  <ul class="text-sm space-y-1">
+                    <li><code>CollectItem</code></li>
+                    <li><code>TalkToNPC</code></li>
+                    <li><code>VisitLocation</code></li>
+                  </ul>
+                </div>
+                <div class="info-box">
+                  <h4 class="font-semibold mb-2">Quest Definition</h4>
+                  <ul class="text-sm space-y-1">
+                    <li><code>QuestID</code> (Name)</li>
+                    <li><code>Title</code> (Text)</li>
+                    <li><code>Objectives</code> (Array)</li>
+                  </ul>
+                </div>
+                <div class="info-box">
+                  <h4 class="font-semibold mb-2">Progress Tracking</h4>
+                  <ul class="text-sm space-y-1">
+                    <li><code>QuestProgress</code></li>
+                    <li><code>ObjectiveProgress</code></li>
+                    <li><code>CurrentAmount</code></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">6.2 Quest Manager Component</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">6.2.3 UpdateProgress Function</h4>
+              <p class="text-gray-700 mb-4">
+                The UpdateProgress function is the core of quest progression, handling objective completion and cross-system communication.
+              </p>
+
+              <div class="code-block">
+                // UpdateProgress Logic
+                for (ActiveQuest : ActiveQuests)
+                {
+                for (Objective : ActiveQuest.Objectives)
+                {
+                if (Objective.Type == UpdateType &amp;&amp;
+                Objective.TargetID == TargetID)
+                {
+                Objective.CurrentAmount += Amount;
+                if (Objective.CurrentAmount &gt;= Objective.RequiredAmount)
+                {
+                Objective.IsComplete = true;
+                }
+                }
+                }
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">6.3 System Integration</h3>
+
+            <div class="warning-box">
+              <h4 class="font-semibold mb-2"><span class="fas fa-link mr-2" role="img" aria-label="Link icon"></span>Mediator Pattern Implementation</h4>
+              <p class="text-sm">The player character acts as a mediator between inventory and quest systems, preventing tight coupling while maintaining communication.</p>
+            </div>
+
+            <div class="mt-6">
+              <h4 class="font-semibold mb-3">Integration Flow</h4>
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <div class="flex items-center justify-center space-x-4 text-sm">
+                  <div class="text-center">
+                    <div class="bg-blue-100 p-2 rounded mb-1">Inventory</div>
+                    <p class="text-xs">OnItemCollected</p>
+                  </div>
+                  <span class="fas fa-arrow-right text-gray-400" role="img" aria-label="Right arrow icon"></span>
+                  <div class="text-center">
+                    <div class="bg-green-100 p-2 rounded mb-1">Character</div>
+                    <p class="text-xs">Mediator</p>
+                  </div>
+                  <span class="fas fa-arrow-right text-gray-400" role="img" aria-label="Right arrow icon"></span>
+                  <div class="text-center">
+                    <div class="bg-purple-100 p-2 rounded mb-1">Quest Manager</div>
+                    <p class="text-xs">HandleInventoryUpdate</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 7: Character Customization -->
+      <section class="px-8 mb-12" id="character-customization">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">7. Character Customization</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">7.1 Modular Setup</h3>
+
+            <div class="mb-6">
+              <p class="text-gray-700 mb-4">
+                Modular character customization allows swapping different body parts while maintaining synchronized animations across all components.
+              </p>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="info-box">
+                  <h4 class="font-semibold mb-2">Mesh Components</h4>
+                  <ul class="text-sm space-y-1">
+                    <li><code>Mesh</code> (Main Body)</li>
+                    <li><code>Mesh_Torso</code></li>
+                    <li><code>Mesh_Legs</code></li>
+                    <li><code>Mesh_Head</code> (Optional)</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded">
+                  <h4 class="font-semibold mb-2">Animation Sync</h4>
+                  <p class="text-sm mb-2">All components must share the same skeleton asset for proper animation synchronization.</p>
+                  <div class="code-block text-xs">
+                    Mesh_Torso-&gt;SetLeaderPoseComponent(Mesh)
+                    Mesh_Legs-&gt;SetLeaderPoseComponent(Mesh)
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6">
+                <img alt="Modular character customization system in Unreal Engine" class="rounded-lg shadow-lg w-full" src="https://kimi-web-img.moonshot.cn/img/d1iv7db44yhgxn.cloudfront.net/03e6bb960e6dc7f5c7ad0bbc3cbe5c28b6b0eb11.png" size="large" aspect="wide" style="photo" query="Unreal Engine character customization interface" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">7.2 Customization Logic</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">7.2.1 EquipPart Function</h4>
+              <p class="text-gray-700 mb-4">
+                The EquipPart function dynamically swaps skeletal meshes based on equipment slot, allowing real-time character customization.
+              </p>
+
+              <div class="code-block">
+                // EquipPart Function
+                Switch (EquipmentSlot)
+                {
+                case Torso:
+                Mesh_Torso-&gt;SetSkeletalMesh(NewMesh);
+                break;
+                case Legs:
+                Mesh_Legs-&gt;SetSkeletalMesh(NewMesh);
+                break;
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 8: Environment Integration -->
+      <section class="px-8 mb-12" id="environment-integration">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">8. Environment Integration</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">8.1 Navigation</h3>
+
+            <div class="mb-6">
+              <p class="text-gray-700 mb-4">
+                AI navigation requires a Nav Mesh Bounds Volume to define walkable areas. The navigation mesh appears as green areas when visualized with &#39;P&#39;.
+              </p>
+
+              <div class="info-box">
+                <h4 class="font-semibold mb-2">Navigation Setup Steps</h4>
+                <ol class="list-decimal list-inside space-y-1 text-sm">
+                  <li>Add Nav Mesh Bounds Volume</li>
+                  <li>Scale to cover playable area</li>
+                  <li>Press &#39;P&#39; to visualize (green = walkable)</li>
+                  <li>Adjust RecastNavMesh settings if needed</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">8.2 Object Placement</h3>
+
+            <div class="mb-6">
+              <p class="text-gray-700 mb-4">
+                Interactive objects are placed in the world and configured through the Details panel using instance-editable variables.
+              </p>
+
+              <div class="grid md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 p-4 rounded">
+                  <h4 class="font-semibold mb-2">Pickup Configuration</h4>
+                  <ul class="text-sm space-y-1">
+                    <li><strong>ItemID:</strong> POTION_HEALTH</li>
+                    <li><strong>Quantity:</strong> 1</li>
+                    <li><strong>Collision:</strong> Block InteractTrace</li>
+                  </ul>
+                </div>
+                <div class="bg-gray-50 p-4 rounded">
+                  <h4 class="font-semibold mb-2">Door Configuration</h4>
+                  <ul class="text-sm space-y-1">
+                    <li><strong>Pivot Point:</strong> At hinge location</li>
+                    <li><strong>Rotation:</strong> 0 to 90 degrees</li>
+                    <li><strong>Animation Time:</strong> 1.5 seconds</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">8.3 Collision Review</h3>
+
+            <div class="warning-box">
+              <h4 class="font-semibold mb-2"><span class="fas fa-shield-alt mr-2" role="img" aria-label="Shield icon"></span>Critical Collision Settings</h4>
+              <p class="text-sm">Ensure proper collision responses for interaction system reliability.</p>
+            </div>
+
+            <div class="mt-6">
+              <div class="code-block">
+                // Collision Presets
+                Environment:
+                - InteractTrace: Ignore
+                - Visibility: Block
+                - Camera: Block
+
+                Interactive Objects:
+                - InteractTrace: Block
+                - Visibility: Ignore
+                - Camera: Ignore
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider max-w-6xl mx-auto"></div>
+
+      <!-- Section 9: Bug Fixes and Polish -->
+      <section class="px-8 mb-12" id="bug-fixes">
+        <div class="max-w-4xl mx-auto">
+          <h2 class="serif text-3xl font-bold mb-8 text-gray-900">9. Bug Fixes and Polish</h2>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">9.1 Debugging Techniques</h3>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-6">
+              <div class="info-box">
+                <h4 class="font-semibold mb-2"><span class="fas fa-terminal mr-2" role="img" aria-label="Terminal icon"></span>Print String</h4>
+                <p class="text-sm">Use for quick variable inspection and execution flow tracking.</p>
+                <div class="code-block text-xs mt-2">
+                  PrintString(&#34;Stamina: &#34; + CurrentStamina)
+                </div>
+              </div>
+              <div class="info-box">
+                <h4 class="font-semibold mb-2"><span class="fas fa-pause mr-2" role="img" aria-label="Pause icon"></span>Breakpoints</h4>
+                <p class="text-sm">Pause execution to inspect variable values by hovering over them.</p>
+              </div>
+              <div class="info-box">
+                <h4 class="font-semibold mb-2"><span class="fas fa-eye mr-2" role="img" aria-label="Eye icon"></span>Visual Debugging</h4>
+                <p class="text-sm">Set Draw Debug Type to visualize traces and hit detection.</p>
+              </div>
+            </div>
+
+            <div class="warning-box">
+              <h4 class="font-semibold mb-2"><span class="fas fa-bug mr-2" role="img" aria-label="Bug icon"></span>Common Issues &amp; Solutions</h4>
+              <ul class="text-sm space-y-2">
+                <li><strong>Interaction Fails:</strong> Check collision settings and interface implementation</li>
+                <li><strong>Struct Data Not Updating:</strong> Use Set Array Elem after modifications</li>
+                <li><strong>T-Posing Meshes:</strong> Verify Leader Pose Component setup</li>
+                <li><strong>Frame Rate Issues:</strong> Always multiply by Delta Seconds</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="mb-8">
+            <h3 class="serif text-2xl font-semibold mb-4 text-gray-800">9.2 User Experience Polish</h3>
+
+            <div class="mb-6">
+              <h4 class="font-semibold mb-3">9.2.1 Interaction UI Feedback</h4>
+              <p class="text-gray-700 mb-4">
+                Clear UI feedback improves player experience by showing interactive objects and available actions.
+              </p>
+
+              <div class="bg-gray-50 p-4 rounded-lg">
+                <h5 class="font-medium mb-2">WBP_HUD Implementation</h5>
+                <ul class="text-sm space-y-1">
+                  <li>Text block for interaction prompts</li>
+                  <li>Dynamic visibility based on target</li>
+                  <li>Updated via Event Tick during interaction checks</li>
+                </ul>
+              </div>
+
+              <div class="mt-6">
+                <img alt="Game HUD showing interaction prompt" class="rounded-lg shadow-lg w-full max-w-md" src="https://kimi-web-img.moonshot.cn/img/www.gameuidatabase.com/bd825208d038b2dc8f3c3f8ec46ca518bd686c9f.jpg" size="medium" aspect="wide" style="photo" query="game HUD interaction prompt" referrerpolicy="no-referrer" data-modified="1" data-score="0.00"/>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <footer class="px-8 py-12 bg-gray-900 text-white">
+        <div class="max-w-4xl mx-auto text-center">
+          <h3 class="serif text-2xl font-bold mb-4">Ready to Build Your Adventure?</h3>
+          <p class="text-gray-300 mb-6">
+            This comprehensive guide provides the foundation for creating a professional-grade adventure game in Unreal Engine 5. Each system is designed to be modular, scalable, and maintainable.
+          </p>
+          <div class="flex justify-center space-x-6 text-sm">
+            <span class="inline-flex items-center"><span class="fas fa-check mr-2 text-green-400" role="img" aria-label="Checkmark icon"></span>Complete Blueprint Implementation</span>
+            <span class="inline-flex items-center"><span class="fas fa-check mr-2 text-green-400" role="img" aria-label="Checkmark icon"></span>Data-Driven Architecture</span>
+            <span class="inline-flex items-center"><span class="fas fa-check mr-2 text-green-400" role="img" aria-label="Checkmark icon"></span>Production-Ready Systems</span>
+          </div>
+        </div>
+      </footer>
+    </main>
+
+    <script>
+        // Smooth scrolling for TOC links
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Active section highlighting
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section[id]');
+            const tocLinks = document.querySelectorAll('.toc-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            tocLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+
+
+
+</body></html>
